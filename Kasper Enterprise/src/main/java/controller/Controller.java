@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import model.DAO;
 import model.JavaBeans;
 
-@WebServlet(urlPatterns = { "/Controller", "/main", "/insert", "/select", "/update", "/delete", "/calcular" })
+@WebServlet(urlPatterns = { "/Controller", "/main", "/insert", "/select", "/update", "/delete" })
 public class Controller extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	// Criar objetos para acessar os metodos publicos Javabeans e DAO
@@ -46,8 +46,6 @@ public class Controller extends HttpServlet {
 			editarProduto(request, response);
 		} else if (action.equals("/delete")) {
 			removerProduto(request, response);
-		}else if (action.equals("/calcular")) {
-			calculoCarrinho(request, response);
 		}
 
 	}
@@ -71,19 +69,24 @@ public class Controller extends HttpServlet {
 			throws ServletException, IOException {
 
 		ArrayList<JavaBeans> lista = dao.listarProdutos();
-		
+
 		request.setAttribute("produtos", lista);
+		dao.somarItem(javabeans);
+		String total = javabeans.getProduto();
+		System.out.println(total);
+		request.setAttribute("total", total);
 		RequestDispatcher rd = request.getRequestDispatcher("carrinho.jsp");
 		rd.forward(request, response);
+
 	}
-	
-	//Editar - Selecionar Produto
+
+	// Editar - Selecionar Produto
 	protected void listarProduto(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String idpro = request.getParameter("idpro");
-		
+
 		System.out.println(idpro);
-		
+
 		javabeans.setIdpro(idpro);
 		dao.selecionarProduto(javabeans);
 		request.setAttribute("idpro", javabeans.getIdpro());
@@ -93,7 +96,7 @@ public class Controller extends HttpServlet {
 		RequestDispatcher rd = request.getRequestDispatcher("editar.jsp");
 		rd.forward(request, response);
 	}
-	
+
 	// Passo 2 - Editar um contato
 	protected void editarProduto(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -104,18 +107,12 @@ public class Controller extends HttpServlet {
 		dao.alterarProduto(javabeans);
 		response.sendRedirect("main");
 	}
+
 	protected void removerProduto(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		javabeans.setIdpro(request.getParameter("idpro"));
-		dao.deletarProduto(javabeans); 
+		dao.deletarProduto(javabeans);
 		response.sendRedirect("main");
 	}
-	protected void calculoCarrinho(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException{
-		javabeans.setQuantidade(request.getParameter("quantidade"));
-		javabeans.setValor(request.getParameter("valor"));
-		dao.calculoCarrinho(javabeans);
-		//response.sendRedirect("main");
-	}
-	
+
 }
