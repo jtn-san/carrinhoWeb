@@ -133,17 +133,17 @@ public class DAO {
 			System.out.println(e);
 		}
 	}
-	public void calculoCarrinho(JavaBeans produto) {
-		String calcular = "select sum(valor*quantidade) as Total from meucarrinho";
-		try {
-			Connection con = conectar();
-			PreparedStatement pst = con.prepareStatement(calcular);
-			pst.setString(1, produto.getIdpro());
-			pst.executeUpdate();
-			con.close();
-		} catch (Exception e) {
-			System.out.println(e);
-		}
+	public void somarItem(JavaBeans javabeans)  {
+			String somar = "select sum(quantidade * preco) from meucarrinho";
+			 try {
+				Connection con = conectar();
+				 PreparedStatement pst = con.prepareStatement(somar);
+				ResultSet rs = pst.executeQuery();			           
+				 while (rs.next()) {
+			 javabeans.setProduto(rs.getString(1));
+			 } con.close();
+			}  catch (Exception e) {
+				 System.out.println(e);
+			 }
 	}
-
 }
