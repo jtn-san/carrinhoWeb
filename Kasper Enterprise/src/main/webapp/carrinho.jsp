@@ -73,7 +73,6 @@
 				<th>Valor </th>
 				<th>Quantidade</th>
 				<th>Opções</th>
-				<th>Total</th>
 			</tr>
 		</thead>
 		<!-- dinamico -->
@@ -90,7 +89,6 @@
 				<td><%=lista.get(i).getProduto()%></td>
 				<td><%=lista.get(i).getQuantidade()%></td>
 				<td><%=lista.get(i).getValor()%></td>
-				<td><%=lista.get(i).getTotal()%></td>
 				
 				<td><a href="select?idpro=<%=lista.get(i).getIdpro()%>" class="Botao1">Editar</a><a href="javascript: confirmar(<%=lista.get(i).getIdpro()%>)" class="Botao2">Excluir</a></td>	
 			</tr>
@@ -98,18 +96,17 @@
 			}
 			%>
 			<thead>
-			<br><br>
-			<form name="calcularCarrinho" action="calcular"> <tr class="text-center">
-				<th>Total:</th>
-				
-				<td><input type="text" name="produto.calcularCarrinho" disabled/></td>
-				</tr>
-				</form>
+
 		</thead>
 		
 		</tbody>
 	</table>
-
+<div class="row mb-2">
+  <label for="colFormLabelSm" class="rounded col-sm-1 col-form-label col-form-label-sm text-dark text-center bg-warning">Total</label>
+  <div class="col-sm-2">
+    <input type="text" class="form-control form-control-sm" id="colFormLabelSm" name="valor" value="<%out.println(request.getAttribute("total"));%>">
+  </div>
+</div>
 
 	<!-- Bootstrap core JavaScript -->
 	<script src="library/jquery/jquery.min.js"></script>
@@ -120,6 +117,18 @@
 	<script src="assets/js/custom.js"></script>
 	<script src="assets/js/owl.js"></script>
 
+<script>
+ $(document).ready(function(){
+
+   $("#total0,#total1").keyup(function(){
+     var total0 = $("#total0").val();
+     var total1 = $("#total1").val();
+     var total_geral = parseInt(total0)+parseInt(total1);
+        $("#final").val(total_geral);
+   });
+
+ });
+</script>
 
 	<script lang="text/Javascript">
     cleared[0] = cleared[1] = cleared[2] = 0; //set a cleared flag for each field

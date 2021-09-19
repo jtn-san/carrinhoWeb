@@ -25,3 +25,4 @@ function confirmar(idpro){
 		window.location.href = 'delete?idpro=' + idpro
 	}	
 }
+
